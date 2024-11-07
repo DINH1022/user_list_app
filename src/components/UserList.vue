@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
+import {filterUsers} from '@/services/userSearchService.js'
+import { getPaginatedData, getTotalPages, switchPage} from '@/services/paginationService.js'
+import { fetchAllUsers } from '@/services/usersApiService.js';
 
 const USERS_PER_PAGE = 2
 const allUsers = ref([])
@@ -8,21 +10,9 @@ const filteredUsers = ref([])
 const currentPage = ref(1)
 const searchInput = ref('')
 
-const fetchAllUsers = async () => {
+const loadUsers = async () => {
   try {
-    const firstPage = await axios.get('https://reqres.in/api/users?page=1')
-    allUsers.value = [...firstPage.data.data]
-    
-    const promises = []
-    for(let i = 2; i <= firstPage.data.total_pages; i++) {
-      promises.push(axios.get(`https://reqres.in/api/users?page=${i}`))
-    }
-
-    const responses = await Promise.all(promises)
-    responses.forEach(response => {
-      allUsers.value = [...allUsers.value, ...response.data.data]
-    })
-    
+    allUsers.value = await fetchAllUsers()    
     filteredUsers.value = [...allUsers.value]
   } catch (error) {
     console.error('Error fetching users:', error)
@@ -30,44 +20,24 @@ const fetchAllUsers = async () => {
 }
 
 const paginatedUsers = computed(() => {
-  const start = (currentPage.value - 1) * USERS_PER_PAGE
-  const end = start + USERS_PER_PAGE
-  return filteredUsers.value.map((user, index) => ({
-    ...user,
-    displayId: index + 1
-  })).slice(start, end)
+  return getPaginatedData(filteredUsers.value, currentPage.value, USERS_PER_PAGE)
 })
 
 const totalPages = computed(() => {
-  return Math.ceil(filteredUsers.value.length / USERS_PER_PAGE)
+  return getTotalPages(filteredUsers.value.length, USERS_PER_PAGE)
 })
 
 const searchUsers = () => {
-  const searchTerm = searchInput.value.trim().toLowerCase()
-  if (searchTerm === '') {
-    filteredUsers.value = [...allUsers.value]
-  } else {
-    filteredUsers.value = allUsers.value.filter(user => 
-      user.first_name.toLowerCase().includes(searchTerm) ||
-      user.last_name.toLowerCase().includes(searchTerm) ||
-      user.email.toLowerCase().includes(searchTerm)
-    )
-  }
+  filteredUsers.value = filterUsers(allUsers.value,searchInput.value)
   currentPage.value = 1
 }
 
 const changePage = (page) => {
-  if (page === 'prev' && currentPage.value > 1) {
-    currentPage.value--
-  } else if (page === 'next' && currentPage.value < totalPages.value) {
-    currentPage.value++
-  } else if (typeof page === 'number') {
-    currentPage.value = page
-  }
+  currentPage.value = switchPage(page, totalPages, currentPage)
 }
 
 onMounted(() => {
-  fetchAllUsers()
+  loadUsers()
 })
 </script>
 
@@ -153,46 +123,5 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.side-content{
-    background-color : #f8f9fa;
-    padding : 20px;
-    min-height: 70vh;
-}
-
-.main-title, .side-title{
-    background-color:#0d6efd;
-    color : white;
-    padding : 15px;
-}
-.pagination{
-    margin-top : 20px;
-    margin-left : 15px;
-}
-
-.no-results {
-    text-align: center;
-    padding: 20px;
-    color: #666;
-}
-.table td {
-    vertical-align: middle;
-}
-.avatar-img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-.row.mb-3 {
-    background-color: #f0f0f0; 
-}
-.col-wrapper, .row.mt-3  {
-    border : 1px solid rgb(183, 179, 179);
-    border-radius: 4px;
-}
-
-.info-wrapper{
-    padding : 20px;
-    min-height: 70vh;
-}
+@import '@/assets/styles/UserList.css';
 </style>

@@ -1,0 +1,42 @@
+.side-content{
+    background-color : #f8f9fa;
+    padding : 20px;
+    min-height: 70vh;
+}
+
+.main-title, .side-title{
+    background-color:#0d6efd;
+    color : white;
+    padding : 15px;
+}
+.pagination{
+    margin-top : 20px;
+    margin-left : 15px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+.table td {
+    vertical-align: middle;
+}
+.avatar-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+.row.mb-3 {
+    background-color: #f0f0f0; 
+}
+.col-wrapper, .row.mt-3  {
+    border : 1px solid rgb(183, 179, 179);
+    border-radius: 4px;
+}
+
+.info-wrapper{
+    padding : 20px;
+    min-height: 70vh;
+}
