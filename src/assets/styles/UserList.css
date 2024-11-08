@@ -5,9 +5,12 @@
 }
 
 .main-title, .side-title{
-    background-color:#0d6efd;
-    color : white;
+    background-color: rgb(237, 234, 234);
+    color : rgb(49, 202, 192);
     padding : 15px;
+    border-bottom : 1px solid rgb(183, 179, 179);
+    font-weight: bold;
+    font-size: 20px;
 }
 .pagination{
     margin-top : 20px;
@@ -39,4 +42,28 @@
 .info-wrapper{
     padding : 20px;
     min-height: 70vh;
+}
+
+.top-header{
+    background-color : #cedaf5;
+    color : rgb(49, 202, 192);
+    font-weight: bold;
+    padding : 15px;
+    margin-bottom : 15px;
+    border-radius : 10px;
+    font-size: 30px;
+}
+
+.footer{
+    background-color : white;
+    padding : 15px;
+    margin-top : 15px;
+    border-radius : 10px;
+    font-size: 15px;
+    border: 1px solid rgb(183, 179, 179);
+    
+}
+.footer-text{
+    font-style: italic;
+    color: #666;
 }
