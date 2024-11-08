@@ -71,7 +71,7 @@ onMounted(() => {
 
     <div class="row mb-3">
       <div class="col-12 d-flex justify-content-between align-items-center p-3">
-        <h5><strong>Home</strong></h5>
+        <h5 @click="backToTable" style="cursor: pointer"><strong>Home</strong></h5>
         <SearchBar v-model:searchInput="searchInput" @search="searchUsers" />
       </div>
     </div>

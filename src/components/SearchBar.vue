@@ -17,7 +17,7 @@ const emit = defineEmits(['update:searchInput','search']);
             @input="e => emit('update:searchInput', e.target.value)"
             type="text" 
             class="form-control me-2" 
-            placeholder="Search users ..."
+            placeholder="Search"
             @keyup.enter="$emit('search')" 
         />
         <button class="btn btn-outline-success" @click="emit('search')">
